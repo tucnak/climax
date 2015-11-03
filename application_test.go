@@ -57,6 +57,7 @@ Additional help topics:
 	speaking    how to talk
 
 Use "application help [topic]" for more information about a topic.
+
 `
 
 const expectedCommandHelp string = `Usage: server -http=4747
