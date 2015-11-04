@@ -11,7 +11,12 @@ so-called topics (some sort of Wiki entries for CLI). You can also define some
 annotated use cases of some command that would get displayed in the
 help section of corresponding command.
 
-After running Climax-based application, you'd likely see something like this:
+##### Why creating another CLI?
+I didn't like existing solutions (e.g. codegangsta/cli | spf13/cobra) either for
+bloated codebase (I dislike huge complex libraries) or poor output style / API.
+This project is just another view on the subject, it has slightly different API
+than, let's say, Cobra and I find it much more convenient.
+
 ```
 Camus is a modern content writing suite.
 
