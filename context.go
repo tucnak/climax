@@ -94,6 +94,10 @@ func parseContext(flags []Flag, argv []string) (*Context, error) {
 		name, value := parseFlagSignature(argument)
 		flag := flagByName(&flags, name)
 
+		if flag == nil {
+			return nil, fmt.Errorf(`option -%s does not exist`, name)
+		}
+
 		if flag.Variable {
 			if value == "" {
 				if strings.HasSuffix(argument, "=") {
@@ -102,11 +106,11 @@ func parseContext(flags []Flag, argv []string) (*Context, error) {
 				}
 
 				if i+1 >= len(argv) {
-					return nil, fmt.Errorf(`option --%s is invalid`, name)
+					return nil, fmt.Errorf(`option -%s is invalid`, name)
 				}
 
 				if looksLikeFlag(argv[i+1]) {
-					return nil, fmt.Errorf(`option --%s is invalid`, name)
+					return nil, fmt.Errorf(`option -%s is invalid`, name)
 				}
 
 				ctx.Variable[flag.Name] = argv[i+1]
@@ -118,7 +122,7 @@ func parseContext(flags []Flag, argv []string) (*Context, error) {
 
 		} else {
 			if value != "" {
-				return nil, fmt.Errorf(`--%s is not variable option`, name)
+				return nil, fmt.Errorf(`-%s is not variable option`, name)
 			}
 
 			ctx.NonVariable[flag.Name] = true
