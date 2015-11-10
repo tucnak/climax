@@ -12,12 +12,12 @@ Usage:
 
 	{{.Name}} {{if .Commands}}command [arguments]{{end}}
 
-{{if .Commands}}The commands are:
+{{if .Commands}}{{if (index (index .Categories 0) 0).Category}}{{else}}The commands are:{{end}}
 
-{{range $category, $value := $.Categories}}
-{{if $category}}{{$category}} COMMANDS:{{end}}
+{{range $_, $commands := $.Categories}}
+{{ $cat := (index $commands 0).Category}}{{if $cat}}{{$cat}} COMMANDS:{{end}}
 
-	{{range $value}}{{.Name | printf "%-11s"}} {{.Brief}}
+	{{range $commands}}{{.Name | printf "%-11s"}} {{.Brief}}
 	{{end}}{{end}}
 Use "{{.Name}} help [command]" for more information about a command.{{end}}
 {{if .Topics}}

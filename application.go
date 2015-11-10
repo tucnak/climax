@@ -18,13 +18,13 @@ type Application struct {
 
 	Commands   []Command
 	Topics     []Topic
-	Categories map[string][]Command
+	Categories [][]Command
 }
 
 func newApplication(name string) *Application {
 	return &Application{
 		Name:       name,
-		Categories: make(map[string][]Command),
+		Categories: make([][]Command, 0),
 	}
 }
 
@@ -61,11 +61,19 @@ func (a Application) isNameAvailable(name string) bool {
 func (a *Application) AddCommand(command Command) {
 	a.Commands = append(a.Commands, command)
 
-	category := strings.ToUpper(command.Category)
-	if _, ok := a.Categories[category]; !ok {
-		a.Categories[category] = []Command{command}
-	} else {
-		a.Categories[category] = append(a.Categories[category], command)
+	found := false
+	command.Category = strings.ToUpper(command.Category)
+
+	for idx, list := range a.Categories {
+		if strings.ToUpper(list[0].Category) == command.Category {
+			a.Categories[idx] = append(a.Categories[idx], command)
+			found = true
+			break
+		}
+	}
+
+	if !found {
+		a.Categories = append(a.Categories, []Command{command})
 	}
 }
 
