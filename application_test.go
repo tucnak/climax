@@ -10,7 +10,7 @@ func TestRun_Bare(t *testing.T) {
 		os.Args = []string{}
 		defer setArguments()
 
-		Application{}.Run()
+		newApplication("dummy").Run()
 	})
 }
 
@@ -46,7 +46,7 @@ The commands are:
 	attach      does some attaching
 	detach      detaches your mind
 	server      starts a web server
-
+	
 Use "application help [command]" for more information about a command.
 
 Additional help topics:
@@ -138,7 +138,7 @@ func TestRun_Help(t *testing.T) {
 }
 
 func TestAddCommand(t *testing.T) {
-	var a Application
+	a := newApplication("dummy")
 	a.AddCommand(Command{})
 	if len(a.Commands) != 1 {
 		t.Error("broken")
@@ -146,7 +146,7 @@ func TestAddCommand(t *testing.T) {
 }
 
 func TestAddTopic(t *testing.T) {
-	var a Application
+	a := newApplication("dummy")
 	a.AddTopic(Topic{})
 	if len(a.Topics) != 1 {
 		t.Error("broken")

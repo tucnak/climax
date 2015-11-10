@@ -13,9 +13,12 @@ Usage:
 	{{.Name}} {{if .Commands}}command [arguments]{{end}}
 
 {{if .Commands}}The commands are:
-{{range .Commands}}
-	{{.Name | printf "%-11s"}} {{.Brief}}{{end}}
 
+{{range $category, $value := $.Categories}}
+{{if $category}}{{$category}} COMMANDS:{{end}}
+
+	{{range $value}}{{.Name | printf "%-11s"}} {{.Brief}}
+	{{end}}{{end}}
 Use "{{.Name}} help [command]" for more information about a command.{{end}}
 {{if .Topics}}
 Additional help topics:

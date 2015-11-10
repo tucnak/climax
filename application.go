@@ -3,6 +3,7 @@ package climax
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 // Application is a main CLI instance.
@@ -15,8 +16,16 @@ type Application struct {
 	Brief   string // `Go is a tool for managing Go source code.`
 	Version string // `1.5`
 
-	Commands []Command
-	Topics   []Topic
+	Commands   []Command
+	Topics     []Topic
+	Categories map[string][]Command
+}
+
+func newApplication(name string) *Application {
+	return &Application{
+		Name:       name,
+		Categories: make(map[string][]Command),
+	}
 }
 
 func (a *Application) commandByName(name string) *Command {
@@ -51,6 +60,13 @@ func (a Application) isNameAvailable(name string) bool {
 // AddCommand does literally what its name says.
 func (a *Application) AddCommand(command Command) {
 	a.Commands = append(a.Commands, command)
+
+	category := strings.ToUpper(command.Category)
+	if _, ok := a.Categories[category]; !ok {
+		a.Categories[category] = []Command{command}
+	} else {
+		a.Categories[category] = append(a.Categories[category], command)
+	}
 }
 
 // AddTopic does literally what its name says.

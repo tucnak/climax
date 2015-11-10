@@ -84,5 +84,5 @@ func New(name string) *Application {
 		panic("can't construct an app without a name")
 	}
 
-	return &Application{Name: name}
+	return newApplication(name)
 }

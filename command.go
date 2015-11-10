@@ -40,6 +40,14 @@ type Command struct {
 	// in the split terminal window.
 	Help string
 
+	// Category is an optional header that might be displayed
+	// over a block of commands. Commands with the the same
+	// Category share the same block.
+	//
+	// Example: "misc" commands would include: help, version, config
+	// Note that categories are uppercased automatically
+	Category string
+
 	// Handling, I bet it's pretty straight-forward.
 	Handle CmdHandler
 
