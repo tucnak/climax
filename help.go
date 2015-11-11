@@ -12,12 +12,13 @@ Usage:
 
 	{{.Name}} {{if .Commands}}command [arguments]{{end}}
 
-{{if .Commands}}{{if (index (index .Categories 0) 0).Category}}{{else}}The commands are:{{end}}
-
-{{range $_, $commands := $.Categories}}
-{{ $cat := (index $commands 0).Category}}{{if $cat}}{{$cat}}:{{end}}
-
-	{{range $commands}}{{.Name | printf "%-11s"}} {{.Brief}}
+{{if .Commands}}The commands are:
+	{{if .UngroupedCount}}{{range .Commands}}
+	{{if not .Group}}{{.Name | printf "%-11s"}} {{.Brief}}{{end}}{{end}}
+	{{end}}{{range .Groups}}{{if .Commands}}
+{{.Name}}
+	{{range .Commands}}
+	{{.Name | printf "%-11s"}} {{.Brief}}{{end}}
 	{{end}}{{end}}
 Use "{{.Name}} help [command]" for more information about a command.{{end}}
 {{if .Topics}}
@@ -103,7 +104,13 @@ func flagUsage(flag Flag) string {
 }
 
 func (a *Application) globalHelp() string {
-	return templated(globalHelpTemplate, *a)
+	return templated(globalHelpTemplate, struct {
+		Application
+		UngroupedCount int
+	}{
+		*a,
+		a.ungroupedCmdsCount,
+	})
 }
 
 func (a *Application) commandHelp(command *Command) string {
