@@ -3,7 +3,6 @@ package climax
 import (
 	"fmt"
 	"os"
-	"strings"
 )
 
 // Application is a main CLI instance.
@@ -62,10 +61,8 @@ func (a *Application) AddCommand(command Command) {
 	a.Commands = append(a.Commands, command)
 
 	found := false
-	command.Category = strings.ToUpper(command.Category)
-
 	for idx, list := range a.Categories {
-		if strings.ToUpper(list[0].Category) == command.Category {
+		if list[0].Category == command.Category {
 			a.Categories[idx] = append(a.Categories[idx], command)
 			found = true
 			break

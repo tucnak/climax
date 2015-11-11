@@ -15,7 +15,7 @@ Usage:
 {{if .Commands}}{{if (index (index .Categories 0) 0).Category}}{{else}}The commands are:{{end}}
 
 {{range $_, $commands := $.Categories}}
-{{ $cat := (index $commands 0).Category}}{{if $cat}}{{$cat}} COMMANDS:{{end}}
+{{ $cat := (index $commands 0).Category}}{{if $cat}}{{$cat}}:{{end}}
 
 	{{range $commands}}{{.Name | printf "%-11s"}} {{.Brief}}
 	{{end}}{{end}}
