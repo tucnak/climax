@@ -7,16 +7,18 @@
 **Climax** is a handy alternative CLI (command-line interface) for Go apps.
 It looks pretty much exactly like the output of the default `go` command and
 incorporates some fancy features from it. For instance, Climax does support
-so-called topics (some sort of Wiki entries for CLI). You can also define some
+so-called topics (some sort of Wiki entries for CLI). You can define some
 annotated use cases of some command that would get displayed in the
-help section of corresponding command.
+help section of corresponding command also.
 
 ##### Why creating another CLI?
 I didn't like existing solutions (e.g. codegangsta/cli | spf13/cobra) either for
-bloated codebase (I dislike huge complex libraries) or poor output style / API.
-This project is just another view on the subject, it has slightly different API
-than, let's say, Cobra and I find it much more convenient.
+bloated codebase (I dislike the huge complex libraries) or poor output
+style / API. This project is just an another view on the subject, it has
+slightly different API than, let's say, Cobra; I find it much more convenient.
+<hr>
 
+A sample application output, Climax produces:
 ```
 Camus is a modern content writing suite.
 
@@ -40,7 +42,7 @@ Additional help topics:
 Use "camus help [topic]" for more information about a topic.
 ```
 
-Here is an example of trivial CLI application that does nothing,
+Here is an example of a trivial CLI application that does nothing,
 but provides a single string split-like functionality:
 ```
 demo := climax.New("demo")
