@@ -10,7 +10,7 @@ func TestRun_Bare(t *testing.T) {
 		os.Args = []string{}
 		defer setArguments()
 
-		newApplication("dummy").Run()
+		Application{}.Run()
 	})
 }
 
@@ -40,7 +40,7 @@ Usage:
 	application command [arguments]
 
 The commands are:
-
+	
 	open        opens smth
 	close       closes smth
 	attach      does some attaching
@@ -138,7 +138,7 @@ func TestRun_Help(t *testing.T) {
 }
 
 func TestAddCommand(t *testing.T) {
-	a := newApplication("dummy")
+	a := Application{}
 	a.AddCommand(Command{})
 	if len(a.Commands) != 1 {
 		t.Error("broken")
@@ -146,7 +146,7 @@ func TestAddCommand(t *testing.T) {
 }
 
 func TestAddTopic(t *testing.T) {
-	a := newApplication("dummy")
+	a := Application{}
 	a.AddTopic(Topic{})
 	if len(a.Topics) != 1 {
 		t.Error("broken")

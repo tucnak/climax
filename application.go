@@ -3,7 +3,6 @@ package climax
 import (
 	"fmt"
 	"os"
-	"strings"
 )
 
 // Application is a main CLI instance.
@@ -16,16 +15,17 @@ type Application struct {
 	Brief   string // `Go is a tool for managing Go source code.`
 	Version string // `1.5`
 
-	Commands   []Command
-	Topics     []Topic
-	Categories [][]Command
+	Commands []Command
+	Topics   []Topic
+	Groups   []Group
+
+	ungroupedCmdsCount int
 }
 
-func newApplication(name string) *Application {
-	return &Application{
-		Name:       name,
-		Categories: make([][]Command, 0),
-	}
+// Group is smth
+type Group struct {
+	Name     string
+	Commands []*Command
 }
 
 func (a *Application) commandByName(name string) *Command {
@@ -48,6 +48,16 @@ func (a *Application) topicByName(name string) *Topic {
 	return nil
 }
 
+func (a *Application) groupByName(name string) *Group {
+	for i, group := range a.Groups {
+		if group.Name == name {
+			return &a.Groups[i]
+		}
+	}
+
+	return nil
+}
+
 func (a Application) isNameAvailable(name string) bool {
 	hypo, jypo := a.commandByName(name), a.topicByName(name)
 	if hypo != nil || jypo != nil {
@@ -57,23 +67,26 @@ func (a Application) isNameAvailable(name string) bool {
 	return true
 }
 
+// AddGroup adds a group.
+func (a *Application) AddGroup(name string) string {
+	a.Groups = append(a.Groups, Group{Name: name})
+	return name
+}
+
 // AddCommand does literally what its name says.
 func (a *Application) AddCommand(command Command) {
 	a.Commands = append(a.Commands, command)
 
-	found := false
-	command.Category = strings.ToUpper(command.Category)
-
-	for idx, list := range a.Categories {
-		if strings.ToUpper(list[0].Category) == command.Category {
-			a.Categories[idx] = append(a.Categories[idx], command)
-			found = true
-			break
+	newCmd := &a.Commands[len(a.Commands)-1]
+	if newCmd.Group != "" {
+		group := a.groupByName(newCmd.Group)
+		if group == nil {
+			panic("group doesn't exist")
 		}
-	}
 
-	if !found {
-		a.Categories = append(a.Categories, []Command{command})
+		group.Commands = append(group.Commands, newCmd)
+	} else {
+		a.ungroupedCmdsCount++
 	}
 }
 
