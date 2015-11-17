@@ -17,6 +17,17 @@ type Application struct {
 
 	Commands []Command
 	Topics   []Topic
+	Groups   []Group
+
+	ungroupedCmdsCount int
+}
+
+// Group connects a list of commands with a descriptive string.
+//
+// The Name is used in the help output to group related commands together.
+type Group struct {
+	Name     string
+	Commands []*Command
 }
 
 func (a *Application) commandByName(name string) *Command {
@@ -39,6 +50,16 @@ func (a *Application) topicByName(name string) *Topic {
 	return nil
 }
 
+func (a *Application) groupByName(name string) *Group {
+	for i, group := range a.Groups {
+		if group.Name == name {
+			return &a.Groups[i]
+		}
+	}
+
+	return nil
+}
+
 func (a Application) isNameAvailable(name string) bool {
 	hypo, jypo := a.commandByName(name), a.topicByName(name)
 	if hypo != nil || jypo != nil {
@@ -48,9 +69,30 @@ func (a Application) isNameAvailable(name string) bool {
 	return true
 }
 
+// AddGroup adds a new empty, named group.
+//
+// Pass the returned group name to Command's Group member
+// to make the command part of the group.
+func (a *Application) AddGroup(name string) string {
+	a.Groups = append(a.Groups, Group{Name: name})
+	return name
+}
+
 // AddCommand does literally what its name says.
 func (a *Application) AddCommand(command Command) {
 	a.Commands = append(a.Commands, command)
+
+	newCmd := &a.Commands[len(a.Commands)-1]
+	if newCmd.Group != "" {
+		group := a.groupByName(newCmd.Group)
+		if group == nil {
+			panic("group doesn't exist")
+		}
+
+		group.Commands = append(group.Commands, newCmd)
+	} else {
+		a.ungroupedCmdsCount++
+	}
 }
 
 // AddTopic does literally what its name says.

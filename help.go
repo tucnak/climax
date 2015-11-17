@@ -13,9 +13,13 @@ Usage:
 	{{.Name}} {{if .Commands}}command [arguments]{{end}}
 
 {{if .Commands}}The commands are:
-{{range .Commands}}
+	{{if .UngroupedCount}}{{range .Commands}}
+	{{if not .Group}}{{.Name | printf "%-11s"}} {{.Brief}}{{end}}{{end}}
+	{{end}}{{range .Groups}}{{if .Commands}}
+{{.Name}}
+	{{range .Commands}}
 	{{.Name | printf "%-11s"}} {{.Brief}}{{end}}
-
+	{{end}}{{end}}
 Use "{{.Name}} help [command]" for more information about a command.{{end}}
 {{if .Topics}}
 Additional help topics:
@@ -108,7 +112,13 @@ func flagUsage(flag Flag, tiny bool) string {
 }
 
 func (a *Application) globalHelp() string {
-	return templated(globalHelpTemplate, *a)
+	return templated(globalHelpTemplate, struct {
+		Application
+		UngroupedCount int
+	}{
+		*a,
+		a.ungroupedCmdsCount,
+	})
 }
 
 func (a *Application) commandHelp(command *Command) string {

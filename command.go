@@ -40,6 +40,9 @@ type Command struct {
 	// in the split terminal window.
 	Help string
 
+	// The group name this command belongs to.
+	Group string
+
 	// Handling, I bet it's pretty straight-forward.
 	Handle CmdHandler
 
