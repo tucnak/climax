@@ -22,7 +22,9 @@ type Application struct {
 	ungroupedCmdsCount int
 }
 
-// Group is smth
+// Group connects a list of commands with a descriptive string.
+//
+// The Name is used in the help output to group related commands together.
 type Group struct {
 	Name     string
 	Commands []*Command
@@ -67,7 +69,10 @@ func (a Application) isNameAvailable(name string) bool {
 	return true
 }
 
-// AddGroup adds a group.
+// AddGroup adds a new empty, named group.
+//
+// Pass the returned group name to Command's Group member
+// to make the command part of the group.
 func (a *Application) AddGroup(name string) string {
 	a.Groups = append(a.Groups, Group{Name: name})
 	return name
