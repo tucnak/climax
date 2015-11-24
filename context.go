@@ -20,10 +20,17 @@ type Context struct {
 
 	NonVariable map[string]bool
 	Variable    map[string]string
+
+	app *Application
+}
+
+// Log prints the message and its (optional) details to stderr.
+func (c *Context) Log(message, details string) {
+	c.app.Log(message, details)
 }
 
 // Is returns true if a flag with corresponding name is defined.
-func (c Context) Is(flagName string) bool {
+func (c *Context) Is(flagName string) bool {
 	if _, ok := c.NonVariable[flagName]; ok {
 		return true
 	}
@@ -37,7 +44,7 @@ func (c Context) Is(flagName string) bool {
 
 // Get returns a value of corresponding variable flag.
 // Second (bool) parameter says whether it's really defined or not.
-func (c Context) Get(variableFlagName string) (string, bool) {
+func (c *Context) Get(variableFlagName string) (string, bool) {
 	value, ok := c.Variable[variableFlagName]
 	return value, ok
 }
@@ -71,17 +78,20 @@ func flagByName(flags *[]Flag, name string) *Flag {
 	return nil
 }
 
-func newContext() *Context {
+func newContext(app *Application) *Context {
 	ctx := Context{}
+
 	ctx.Args = []string{}
 	ctx.NonVariable = make(map[string]bool)
 	ctx.Variable = make(map[string]string)
 
+	ctx.app = app
+
 	return &ctx
 }
 
-func parseContext(flags []Flag, argv []string) (*Context, error) {
-	ctx := newContext()
+func (a *Application) parseContext(flags []Flag, argv []string) (*Context, error) {
+	ctx := newContext(a)
 
 	for i := 0; i < len(argv); i++ {
 		argument := argv[i]

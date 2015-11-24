@@ -10,7 +10,8 @@ func TestRun_Bare(t *testing.T) {
 		os.Args = []string{}
 		defer setArguments()
 
-		Application{}.Run()
+		a := Application{}
+		a.Run()
 	})
 }
 
@@ -40,13 +41,13 @@ Usage:
 	application command [arguments]
 
 The commands are:
-	
+
 	open        opens smth
 	close       closes smth
 	attach      does some attaching
 	detach      detaches your mind
 	server      starts a web server
-	
+
 Use "application help [command]" for more information about a command.
 
 Additional help topics:

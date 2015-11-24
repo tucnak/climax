@@ -6,8 +6,11 @@ import (
 )
 
 func TestContext(t *testing.T) {
+	app := &Application{}
 	check := func(c string, f []Flag, a []string, exp Context) {
-		ctx, err := parseContext(f, a)
+		exp.app = app
+
+		ctx, err := app.parseContext(f, a)
 		if err != nil {
 			t.Errorf(`case "%s" didn't finish well:`, c)
 			t.Logf(`error: %s`, err)
@@ -22,7 +25,7 @@ func TestContext(t *testing.T) {
 	}
 
 	mustFail := func(c string, f []Flag, a []string) {
-		_, err := parseContext(f, a)
+		_, err := app.parseContext(f, a)
 		if err == nil {
 			t.Errorf(`invalid case "%s" resulted in valid context`, c)
 		}
@@ -31,7 +34,7 @@ func TestContext(t *testing.T) {
 	// PASS TESTS
 	// ==========
 
-	check("no args", []Flag{}, []string{}, *newContext())
+	check("no args", []Flag{}, []string{}, *newContext(app))
 
 	check("no flags", []Flag{}, []string{"argument", "a thing"}, Context{
 		Args:        []string{"argument", "a thing"},

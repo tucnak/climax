@@ -13,9 +13,9 @@ Usage:
 	{{.Name}} {{if .Commands}}command [arguments]{{end}}
 
 {{if .Commands}}The commands are:
-	{{if .UngroupedCount}}{{range .Commands}}
+{{if .UngroupedCount}}{{range .Commands}}
 	{{if not .Group}}{{.Name | printf "%-11s"}} {{.Brief}}{{end}}{{end}}
-	{{end}}{{range .Groups}}{{if .Commands}}
+{{end}}{{range .Groups}}{{if .Commands}}
 {{.Name}}
 	{{range .Commands}}
 	{{.Name | printf "%-11s"}} {{.Brief}}{{end}}
