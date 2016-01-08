@@ -24,9 +24,9 @@ type Context struct {
 	app *Application
 }
 
-// Log prints the message and its (optional) details to stderr.
-func (c *Context) Log(message, details string) {
-	c.app.Log(message, details)
+// Log prints the message to stderrr (each argument takes a distinct line).
+func (c *Context) Log(data ...interface{}) {
+	c.app.Log(data)
 }
 
 // Is returns true if a flag with corresponding name is defined.

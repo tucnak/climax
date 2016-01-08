@@ -5,8 +5,7 @@
 // You can also define some annotated use cases of some command that
 // would get displayed in the help section of corresponding command.
 //
-// After running Climax-based application, you'd likely see something
-// like this:
+// Climax-based applications produce this sort of output:
 //
 //		Camus is a modern content writing suite.
 //
@@ -28,51 +27,6 @@
 //			realtime    effective real-time writing
 //
 //		Use "camus help [topic]" for more information about a topic.
-//
-// Here is an example of trivial CLI application that does nothing, but
-// provides a single string split-like functionality:
-//
-//		demo := climax.New("demo")
-//		demo.Brief = "Demo is a funky demonstation of Climax capabilities."
-//		demo.Version = "stable"
-//
-//		joinCmd := climax.Command{
-//			Name:  "join",
-//			Brief: "merges the strings given",
-//			Usage: `[-s=] "a few" distinct strings`,
-//			Help:  `Lorem ipsum dolor sit amet amet sit todor...`,
-//
-//			Flags: []climax.Flag{
-//				{
-//					Name:     "separator",
-//					Short:    "s",
-//					Usage:    `--separator="."`,
-//					Help:     `Put some separating string between all the strings given.`,
-//					Variable: true,
-//				},
-//			},
-//
-//			Examples: []climax.Example{
-//				{
-//					Usecase:     `-s . "google" "com"`,
-//					Description: `Results in "google.com"`,
-//				},
-//			},
-//
-//			Handle: func(ctx climax.Context) int {
-//				var separator string
-//				if sep, ok := ctx.Get("separator"); ok {
-//					separator = sep
-//				}
-//
-//				fmt.Println(strings.Join(ctx.Args, separator))
-//
-//				return 0
-//			},
-//		}
-//
-//		demo.AddCommand(joinCmd)
-//		demo.Run()
 //
 // Have fun!
 package climax
