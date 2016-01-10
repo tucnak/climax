@@ -25,6 +25,11 @@ type Application struct {
 	Topics   []Topic
 	Groups   []Group
 
+	// Default is a default handler. It gets executed if there are
+	// no command line arguments (except the program name), when
+	// otherwise, by default, the help entry is being shown.
+	Default CmdHandler
+
 	ungroupedCmdsCount int
 }
 
@@ -44,8 +49,10 @@ func (a *Application) printf(format string, stuff ...interface{}) {
 	fmt.Fprintf(outputDevice, format, stuff...)
 }
 
-func (a *Application) printerr(err interface{}) {
-	fmt.Fprintln(errorDevice, a.Name+":", err)
+func (a *Application) printerr(err ...interface{}) {
+	for _, each := range err {
+		fmt.Fprintln(errorDevice, a.Name+":", each)
+	}
 }
 
 func (a *Application) commandByName(name string) *Command {
@@ -129,8 +136,12 @@ func (a *Application) Run() int {
 	// $ program
 	//           ^ no args
 	if len(arguments) == 0 {
-		a.println(a.globalHelp())
-		return 0
+		if a.Default == nil {
+			a.println(a.globalHelp())
+			return 0
+		}
+
+		return a.Default(*newContext(a))
 	}
 
 	yankeeGoHome := func(errMsg string) {
@@ -188,7 +199,5 @@ func (a *Application) Run() int {
 
 // Log prints the message to stderrr (each argument takes a distinct line).
 func (a *Application) Log(lines ...interface{}) {
-	for _, line := range lines {
-		a.printerr(line)
-	}
+	a.printerr(lines...)
 }

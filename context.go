@@ -26,7 +26,7 @@ type Context struct {
 
 // Log prints the message to stderrr (each argument takes a distinct line).
 func (c *Context) Log(data ...interface{}) {
-	c.app.Log(data)
+	c.app.Log(data...)
 }
 
 // Is returns true if a flag with corresponding name is defined.
