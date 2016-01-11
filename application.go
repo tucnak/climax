@@ -104,8 +104,8 @@ func (a *Application) AddGroup(name string) string {
 }
 
 // AddCommand does literally what its name says.
-func (a *Application) AddCommand(command Command) {
-	a.Commands = append(a.Commands, command)
+func (a *Application) AddCommand(command ...Command) {
+	a.Commands = append(a.Commands, command...)
 
 	newCmd := &a.Commands[len(a.Commands)-1]
 	if newCmd.Group != "" {
@@ -121,8 +121,8 @@ func (a *Application) AddCommand(command Command) {
 }
 
 // AddTopic does literally what its name says.
-func (a *Application) AddTopic(topic Topic) {
-	a.Topics = append(a.Topics, topic)
+func (a *Application) AddTopic(topic ...Topic) {
+	a.Topics = append(a.Topics, topic...)
 }
 
 // Run executes a CLI.
