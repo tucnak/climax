@@ -44,7 +44,7 @@ Use "camus help [topic]" for more information about a topic.
 
 Here is an example of a trivial CLI application that does nothing,
 but provides a single string split-like functionality:
-```
+```go
 demo := climax.New("demo")
 demo.Brief = "Demo is a funky demonstation of Climax capabilities."
 demo.Version = "stable"
