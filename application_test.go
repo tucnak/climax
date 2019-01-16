@@ -81,11 +81,11 @@ func TestRun_Help(t *testing.T) {
 	a := New("application")
 	a.Brief = "application is a thing"
 
-	a.AddCommand(Command{Name: "open", Brief: "opens smth"})
-	a.AddCommand(Command{Name: "close", Brief: "closes smth"})
-	a.AddCommand(Command{Name: "attach", Brief: "does some attaching"})
-	a.AddCommand(Command{Name: "detach", Brief: "detaches your mind"})
-	a.AddCommand(Command{
+	a.AddCommand(&Command{Name: "open", Brief: "opens smth"})
+	a.AddCommand(&Command{Name: "close", Brief: "closes smth"})
+	a.AddCommand(&Command{Name: "attach", Brief: "does some attaching"})
+	a.AddCommand(&Command{Name: "detach", Brief: "detaches your mind"})
+	a.AddCommand(&Command{
 		Name:  "server",
 		Brief: "starts a web server",
 		Usage: "-http=4747",
@@ -106,10 +106,10 @@ func TestRun_Help(t *testing.T) {
 		},
 	})
 
-	a.AddTopic(Topic{Name: "writing", Brief: "how to write"})
-	a.AddTopic(Topic{Name: "reading", Brief: "how to read"})
-	a.AddTopic(Topic{Name: "listening", Brief: "how to listen to people"})
-	a.AddTopic(Topic{Name: "speaking", Brief: "how to talk"})
+	a.AddTopic(&Topic{Name: "writing", Brief: "how to write"})
+	a.AddTopic(&Topic{Name: "reading", Brief: "how to read"})
+	a.AddTopic(&Topic{Name: "listening", Brief: "how to listen to people"})
+	a.AddTopic(&Topic{Name: "speaking", Brief: "how to talk"})
 
 	if exitcode := a.Run(); exitcode != 0 {
 		t.Errorf("finished with code %d, expected 0", exitcode)
@@ -140,7 +140,7 @@ func TestRun_Help(t *testing.T) {
 
 func TestAddCommand(t *testing.T) {
 	a := Application{}
-	a.AddCommand(Command{})
+	a.AddCommand(&Command{})
 	if len(a.Commands) != 1 {
 		t.Error("broken")
 	}
@@ -148,7 +148,7 @@ func TestAddCommand(t *testing.T) {
 
 func TestAddTopic(t *testing.T) {
 	a := Application{}
-	a.AddTopic(Topic{})
+	a.AddTopic(&Topic{})
 	if len(a.Topics) != 1 {
 		t.Error("broken")
 	}
