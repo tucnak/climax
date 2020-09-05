@@ -1,11 +1,11 @@
 // Package climax is a handy alternative CLI for Go applications. It looks
 // pretty much exactly like the output of the default `go` command and
-// incorporates some fancy features from it. For instance, Climax does
+// incorporates some cool features from it. For instance, Climax does
 // support so-called topics (some sort of Wiki entries for CLI).
 // You can also define some annotated use cases of some command that
 // would get displayed in the help section of corresponding command.
 //
-// Climax-based applications produce this sort of output:
+// Climax applications produce this sort of output:
 //
 //		Camus is a modern content writing suite.
 //
@@ -28,7 +28,6 @@
 //
 //		Use "camus help [topic]" for more information about a topic.
 //
-// Have fun!
 package climax
 
 // New constructs a new CLI application with a given name.
